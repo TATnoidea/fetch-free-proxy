@@ -1,0 +1,12 @@
+{
+  "name": "fetch-free-proxy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:TATnoidea/fetch-free-proxy.git",
+  "author": "chengzichao <chengzichao1995@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.87.0"
+  }
+}
