@@ -5,8 +5,10 @@
   "repository": "git@github.com:TATnoidea/fetch-free-proxy.git",
   "author": "chengzichao <chengzichao1995@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node ./src/app.js"
+  },
   "dependencies": {
-    "async": "^2.6.1",
     "cheerio": "^1.0.0-rc.2",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"

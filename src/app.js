@@ -3,37 +3,40 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 
 // 获取快代理
-function fetchFastProxy(page, proxyArr) {
-  const url = `https://www.kuaidaili.com/free/inha/${page}/`;
-  rp({
-    url: url,
-    method: "GET",
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
-    }
-  })
-    .then(async body => {
-      const $ = cheerio.load(body);
-      const trList = $(".table tbody tr");
-
-      for (let i = 0; i < trList.length; i++) {
-        const td = trList.eq(i).children("td");
-        const ip = td.eq(0).text(); // 获取ip
-        const port = td.eq(1).text(); // 获取端口
-        const protocol = td
-          .eq(3)
-          .text()
-          .toLowerCase(); // 获取协议
-        const proxy = new PROXY(ip, port, protocol); // 实例化代理对象
-        const res = await check(proxy);
-        if (res) proxyArr.push(proxy);
+async function fetchFastProxy(proxyArr) {
+  for (let i = 1; i <= 20; i++) {
+    const url = `https://www.kuaidaili.com/free/inha/${i}/`;
+    await rp({
+      url: url,
+      method: "GET",
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
       }
     })
-    .catch(err => {
-      console.log(`Sorry, failed to send request to ${url}`);
-    });
-  console.log(proxyArr);
+      .then(async body => {
+        const $ = cheerio.load(body);
+        const trList = $(".table tbody tr");
+
+        for (let i = 0; i < trList.length; i++) {
+          const td = trList.eq(i).children("td");
+          const ip = td.eq(0).text(); // 获取ip
+          const port = td.eq(1).text(); // 获取端口
+          const protocol = td
+            .eq(3)
+            .text()
+            .toLowerCase(); // 获取协议
+          const proxy = new PROXY(ip, port, protocol); // 实例化代理对象
+          const res = await check(proxy);
+          if (res) proxyArr.push(proxy);
+        }
+        console.log(proxyArr);
+      })
+      .catch(err => {
+        if (err) throw err;
+        console.log(`Sorry, failed to send request to ${url}`);
+      });
+  }
 }
 // 代理对象构造函数
 function PROXY(ip, port, protocol = "http") {
@@ -66,7 +69,7 @@ function check(proxy) {
       // 请求失败
       .catch(err => {
         if (err) {
-          console.log(`Sorry, ${proxyURL} doesn't work, ${err.Error}`);
+          console.log(`Sorry, ${proxyURL} doesn't work, ${err}`);
           return false;
         }
       })
@@ -84,13 +87,17 @@ function saveProxyToJSON(proxyArr) {
       console.log("Append success!");
     });
   } else {
-    fs.appendFile(fileURL, JSON.stringify(proxyArr), { flag: "a+" }, err => {
+    fs.appendFile(fileURL, JSON.stringify(proxyArr),"a+", err => {
       if (err) throw err;
       console.log("Success!");
     });
   }
 }
 
-function _main() {
+async function _main() {
   const proxyArr = [];
+  await fetchFastProxy(proxyArr);
+  saveProxyToJSON(proxyArr);
 }
+
+_main();
