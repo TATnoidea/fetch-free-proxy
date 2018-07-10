@@ -6,7 +6,9 @@
   "author": "chengzichao <chengzichao1995@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./src/app.js"
+    "serve": "node ./src/app.js",
+    "start": "forever start -l ./log/forever.log -o ./log/out.log -e ./log/err.log ./src/app.js",
+    "stop": "forever stop ./src/app.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
