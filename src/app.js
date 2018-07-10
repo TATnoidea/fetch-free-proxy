@@ -87,7 +87,7 @@ function saveProxyToJSON(proxyArr) {
       console.log("Append success!");
     });
   } else {
-    fs.appendFile(fileURL, JSON.stringify(proxyArr),"a+", err => {
+    fs.appendFile(fileURL, JSON.stringify(proxyArr), "a+", err => {
       if (err) throw err;
       console.log("Success!");
     });
