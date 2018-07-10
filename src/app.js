@@ -1,10 +1,11 @@
 const rp = require("request-promise");
 const cheerio = require("cheerio");
 const fs = require("fs");
+const path = require("path");
 
 // 获取快代理
 async function fetchFastProxy(proxyArr) {
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= 1; i++) {
     const url = `https://www.kuaidaili.com/free/inha/${i}/`;
     await rp({
       url: url,
@@ -78,7 +79,7 @@ function check(proxy) {
 
 // 保存代理到json文件中
 function saveProxyToJSON(proxyArr) {
-  const fileURL = "./data/proxy.json"; //  文件地址
+  const fileURL = path.resolve(__dirname, "./data/proxy.json"); //  文件地址
   if (fs.existsSync(fileURL)) {
     const fileData = JSON.parse(fs.readFileSync(fileURL)); // 读取文件数据
     const data = JSON.stringify(fileData.concat(data)); // 合并数组并转为字符串格式
@@ -87,9 +88,10 @@ function saveProxyToJSON(proxyArr) {
       console.log("Append success!");
     });
   } else {
-    fs.appendFile(fileURL, JSON.stringify(proxyArr), "a+", err => {
+    const data = JSON.stringify(proxyArr);
+    fs.writeFile(fileURL, data, { flag: "w+" }, err => {
       if (err) throw err;
-      console.log("Success!");
+      console.log('Success');
     });
   }
 }
