@@ -19,16 +19,24 @@ const proxy = sequelize.define('proxy', {
   }
 })
 
-proxy.sync({force: false});
-
-
-function create(proxyObj) {
-  proxy.create(proxyObj)
-  .then(p => {
-    console.log(p)
+// 添加代理地址
+function create(obj) {
+  proxy.findOrCreate({
+    where: {
+      ip: obj.ip,
+      port: obj.port
+    },
+    defaults: {
+      protocol: obj.protocol,
+      speed: obj.speed || null
+    }
   })
-  .catch(err => {
-    if(err) throw err;
-  })
+  .spread((proxy, created) => {
+    console.log(proxy)
+    console.log(created)
+  });
 }
-module.exports = { create }
+
+module.exports = {
+  create
+};
