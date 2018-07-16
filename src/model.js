@@ -33,7 +33,7 @@ function create(obj) {
   })
   .spread((proxy, created) => {
     console.log(proxy)
-    console.log(created)
+    // console.log(created)
   });
 }
 

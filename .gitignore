@@ -5,3 +5,5 @@
 /log/err.log
 
 /log/out.log
+
+/src/img/*
