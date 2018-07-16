@@ -35,7 +35,7 @@ function check(proxy) {
 }
 
 // 下载图片
-function downloadImg(url, filename, cb) {
+function downloadImg(url, filename) {
   // 图片保存路径
   const imgURL = `${path.resolve(__dirname, "./img")}/${filename}`;
 
@@ -75,7 +75,7 @@ function getNumFromImg(filename) {
 function delImg(filename) {
   const url = path.resolve(__dirname, `./img/${ filename }`)
   fs.unlink(url, () => {
-    console.log('file is already deleted');
+    console.log(`${ filename } is already deleted`);
   })
 }
 // 生成随机文件名

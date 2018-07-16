@@ -39,6 +39,7 @@ async function fetchFastProxy(page) {
   }
 }
 
+// 获取米扑代理
 async function fetchMiMvp(page) {
   for (let i = 1; i <= page; i++) {
     const url = `https://proxy.mimvp.com/free.php?proxy=in_hp&sort=&page=${ i }`;
@@ -66,13 +67,12 @@ async function fetchMiMvp(page) {
           protocol = 'http';
         }
         const filename = `${ utils.createRandomName() }.png`;
-        utils.downloadImg(portImg, filename).on('finish', async () => {
-          const port = await utils.getNumFromImg(filename);
-          console.log(port);
-          utils.delImg(filename);
+        utils.downloadImg(portImg, filename).on('finish', async () => { // fs.createWriteStream完成时有一个finish事件，此时执行回调函数
+          const port = await utils.getNumFromImg(filename); // 通过工具函数获取端口号
+          utils.delImg(filename); // 获取端口号完成后删除文件
           const proxyObj = {ip, port, protocol};
-          const res = await utils.check(proxyObj);
-          if(res) proxy.create(proxyObj);
+          const res = await utils.check(proxyObj);  // 判断是否可用
+          if(res) proxy.create(proxyObj); // 可用添加进入数据库
         })
       }
     });
