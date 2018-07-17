@@ -49,7 +49,7 @@ function downloadImg(url, filename) {
   })
     .on("response", res => {
       if (res.statusCode === 200) {
-        console.log(`img type: ${res.headers["content-type"]}`);
+        // console.log(`img type: ${res.headers["content-type"]}`);
       } else {
         console.log("Sorry, can not get the img");
       }
@@ -65,7 +65,6 @@ function getNumFromImg(filename) {
   const img = fs
     .readFileSync(`${path.resolve(__dirname, "./img")}/${filename}`)
     .toString("base64");
-  console.log(img);
   return ocrClient.generalBasic(img).then(result => {
     if(result.error_msg) throw result.error_msg;
     return result.words_result[0].words;
@@ -75,7 +74,7 @@ function getNumFromImg(filename) {
 function delImg(filename) {
   const url = path.resolve(__dirname, `./img/${ filename }`)
   fs.unlink(url, () => {
-    console.log(`${ filename } is already deleted`);
+    // console.log(`${ filename } is already deleted`);
   })
 }
 // 生成随机文件名
