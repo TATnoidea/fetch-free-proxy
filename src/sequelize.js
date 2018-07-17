@@ -6,6 +6,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   host: config.host,
   port: config.port,
   timestamps: false,
+  timezone: '+08:00',
   pool: {
     max: 5,
     idle: 10000,
